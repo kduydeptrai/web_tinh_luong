@@ -58,9 +58,7 @@
 
         main { flex: 1; padding: 28px 0; }
 
-        /* ============================================
-           ===== FEATURE NAV (nút chức năng) ==========
-           ============================================ */
+        /* ===== FEATURE NAV ===== */
         .feature-nav {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -104,17 +102,12 @@
             transition: stroke 0.22s ease;
         }
         .feature-btn .feature-label {
-            font-size: 14px; font-weight: 700;
-            line-height: 1.3;
+            font-size: 14px; font-weight: 700; line-height: 1.3;
         }
         .feature-btn .feature-desc {
-            font-size: 11.5px;
-            color: #8fa6b9;
-            font-weight: 500;
-            line-height: 1.3;
+            font-size: 11.5px; color: #8fa6b9;
+            font-weight: 500; line-height: 1.3;
         }
-
-        /* Trạng thái active */
         .feature-btn.active {
             background: linear-gradient(135deg, #1e6b9b 0%, #2a7faa 100%);
             border-color: #1e6b9b;
@@ -122,15 +115,11 @@
             box-shadow: 0 8px 22px rgba(30, 107, 155, 0.35);
             transform: translateY(-2px);
         }
-        .feature-btn.active .feature-icon {
-            background: rgba(255,255,255,0.18);
-        }
+        .feature-btn.active .feature-icon { background: rgba(255,255,255,0.18); }
         .feature-btn.active .feature-icon svg { stroke: white; }
         .feature-btn.active .feature-desc { color: rgba(255,255,255,0.75); }
 
-        /* ============================================
-           ===== FEATURE PANELS ======================
-           ============================================ */
+        /* ===== FEATURE PANELS ===== */
         .feature-panel { display: none; animation: fadeIn 0.28s ease; }
         .feature-panel.active { display: block; }
         @keyframes fadeIn {
@@ -146,14 +135,11 @@
             box-shadow: 0 6px 16px rgba(0, 20, 40, 0.07);
             border: 1px solid #e2edf5;
         }
-
         .section-title {
             font-size: 18px;
             margin: 0 0 16px;
             color: #1e4e6b;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            display: flex; align-items: center; gap: 10px;
             font-weight: 700;
         }
         .section-title svg {
@@ -185,6 +171,30 @@
             outline: none;
             border-color: #2a7faa;
             box-shadow: 0 0 0 3px rgba(42, 127, 170, 0.15);
+        }
+
+        /* Ô nhập tiền: căn phải, chữ số tabular cho thẳng hàng */
+        .money-input {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.3px;
+        }
+        /* Hiển thị đơn vị ₫ bên trong input tiền */
+        .money-field {
+            position: relative;
+        }
+        .money-field .money-input {
+            padding-right: 34px;
+        }
+        .money-field .currency-suffix {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13.5px;
+            color: #8fa6b9;
+            font-weight: 600;
+            pointer-events: none;
         }
 
         /* ===== BUTTONS ===== */
@@ -373,9 +383,7 @@
             stroke-linecap: round; stroke-linejoin: round;
         }
 
-        /* ============================================
-           ===== RESPONSIVE ==========================
-           ============================================ */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .grid-3 { grid-template-columns: repeat(2, 1fr); }
             .feature-nav { grid-template-columns: repeat(2, 1fr); }
@@ -407,6 +415,8 @@
             .section-title svg { width: 18px; height: 18px; }
 
             input, select { font-size: 16px; padding: 11px 13px; }
+            /* mobile giữ padding phải cho input tiền để không đè lên suffix */
+            .money-field .money-input { padding-right: 32px; }
             label { font-size: 13px; }
             .form-group { margin-bottom: 14px; }
 
@@ -421,7 +431,6 @@
             .salary-preview { padding: 14px; }
             .salary-preview p { font-size: 13px; margin: 6px 0; }
 
-            /* Feature nav mobile: 2 cột */
             .feature-nav { gap: 10px; margin-bottom: 18px; }
             .feature-btn { padding: 14px 10px; border-radius: 13px; gap: 7px; }
             .feature-btn .feature-icon { width: 38px; height: 38px; border-radius: 11px; }
@@ -565,11 +574,19 @@
                         </div>
                         <div class="form-group">
                             <label>Lương cơ bản (VNĐ) *</label>
-                            <input type="number" id="empBaseSalary" placeholder="VD: 8000000" min="0" step="100000">
+                            <div class="money-field">
+                                <input type="text" inputmode="numeric" id="empBaseSalary"
+                                       class="money-input" placeholder="VD: 8.000.000" autocomplete="off">
+                                <span class="currency-suffix">₫</span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Phụ cấp (VNĐ)</label>
-                            <input type="number" id="empAllowance" placeholder="VD: 500000" min="0" step="100000" value="0">
+                            <div class="money-field">
+                                <input type="text" inputmode="numeric" id="empAllowance"
+                                       class="money-input" placeholder="VD: 500.000" value="0" autocomplete="off">
+                                <span class="currency-suffix">₫</span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Ngày vào làm *</label>
@@ -638,11 +655,19 @@
                             </div>
                             <div class="form-group">
                                 <label>Thưởng (VNĐ)</label>
-                                <input type="number" id="salaryBonus" value="0" min="0" step="100000">
+                                <div class="money-field">
+                                    <input type="text" inputmode="numeric" id="salaryBonus"
+                                           class="money-input" value="0" autocomplete="off">
+                                    <span class="currency-suffix">₫</span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Khấu trừ / Phạt (VNĐ)</label>
-                                <input type="number" id="salaryDeduction" value="0" min="0" step="100000">
+                                <div class="money-field">
+                                    <input type="text" inputmode="numeric" id="salaryDeduction"
+                                           class="money-input" value="0" autocomplete="off">
+                                    <span class="currency-suffix">₫</span>
+                                </div>
                             </div>
                             <div class="btn-group">
                                 <button onclick="calculateSalary()">
@@ -764,13 +789,96 @@
     </footer>
 
 <script>
-    // ========== DỮ LIỆU ==========
+    // ============================================================
+    // ===== ĐỊNH DẠNG SỐ TIỀN (dấu chấm ngăn cách hàng nghìn) =====
+    // ============================================================
+
+    // Chỉ lấy phần chữ số từ chuỗi bất kỳ
+    function digitsOnly(str) {
+        return String(str || '').replace(/[^\d]/g, '');
+    }
+
+    // Định dạng chuỗi chữ số thành dạng 1.234.567
+    function formatNumberWithDots(digits) {
+        if (!digits) return '';
+        // bỏ số 0 ở đầu (nhưng giữ lại nếu chỉ có "0")
+        digits = digits.replace(/^0+(?=\d)/, '');
+        return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    // Lấy giá trị số thực từ input đã định dạng
+    function getNumericValue(id) {
+        const el = document.getElementById(id);
+        if (!el) return 0;
+        const digits = digitsOnly(el.value);
+        return digits ? parseInt(digits, 10) : 0;
+    }
+
+    // Đặt giá trị số vào input dưới dạng đã định dạng
+    function setNumericValue(id, num) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const n = Number(num) || 0;
+        el.value = n === 0 ? '0' : formatNumberWithDots(String(n));
+    }
+
+    // Gắn tự động định dạng khi người dùng gõ vào các ô .money-input
+    function attachMoneyInput(input) {
+        // Khi focus: nếu đang là "0" thì cho phép xóa dễ
+        input.addEventListener('focus', function () {
+            if (this.value === '0') this.value = '';
+        });
+
+        // Khi gõ: định dạng ngay
+        input.addEventListener('input', function () {
+            const cursorPos = this.selectionStart;
+            const oldLen = this.value.length;
+            const digits = digitsOnly(this.value);
+            const formatted = formatNumberWithDots(digits);
+            this.value = formatted;
+
+            // Giữ con trỏ ở vị trí hợp lý (tính theo chênh lệch ký tự thêm vào)
+            const newLen = formatted.length;
+            const diff = newLen - oldLen;
+            let newPos = cursorPos + diff;
+            if (newPos < 0) newPos = 0;
+            if (newPos > newLen) newPos = newLen;
+            try {
+                this.setSelectionRange(newPos, newPos);
+            } catch (e) {}
+        });
+
+        // Khi blur: nếu rỗng thì đưa về "0"
+        input.addEventListener('blur', function () {
+            if (this.value.trim() === '') {
+                this.value = '0';
+            }
+        });
+    }
+
+    function setupAllMoneyInputs() {
+        document.querySelectorAll('.money-input').forEach(input => {
+            if (input.dataset.moneyAttached) return; // tránh gắn 2 lần
+            input.dataset.moneyAttached = '1';
+            attachMoneyInput(input);
+            // Định dạng lại giá trị ban đầu nếu có
+            if (input.value) {
+                input.value = formatNumberWithDots(digitsOnly(input.value));
+            }
+        });
+    }
+
+    // ============================================================
+    // ===== DỮ LIỆU =====
+    // ============================================================
     let employees = [];
     let salaryBook = [];
     let nextEmployeeId = 1;
     let nextSalaryId = 1;
 
-    // ========== ĐIỀU HƯỚNG TAB ==========
+    // ============================================================
+    // ===== ĐIỀU HƯỚNG TAB =====
+    // ============================================================
     function setupTabs() {
         const btns = document.querySelectorAll('.feature-btn');
         const panels = document.querySelectorAll('.feature-panel');
@@ -778,28 +886,23 @@
         btns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetId = btn.dataset.panel;
-
-                // Bỏ active tất cả
                 btns.forEach(b => {
                     b.classList.remove('active');
                     b.setAttribute('aria-selected', 'false');
                 });
                 panels.forEach(p => p.classList.remove('active'));
 
-                // Kích hoạt cái được chọn
                 btn.classList.add('active');
                 btn.setAttribute('aria-selected', 'true');
                 const target = document.getElementById(targetId);
                 if (target) target.classList.add('active');
 
-                // Cuộn nhẹ lên đầu panel khi chuyển tab (mobile)
                 if (window.innerWidth <= 640) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             });
         });
 
-        // Hỗ trợ phím mũi tên trái/phải để chuyển tab (accessibility)
         const nav = document.querySelector('.feature-nav');
         nav.addEventListener('keydown', (e) => {
             if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
@@ -813,16 +916,18 @@
         });
     }
 
-    // Hàm chuyển tab bằng code (dùng sau khi thêm nhân viên, lưu lương...)
     function switchToPanel(panelId) {
         const btn = document.querySelector(`.feature-btn[data-panel="${panelId}"]`);
         if (btn) btn.click();
     }
 
-    // ========== KHỞI TẠO ==========
+    // ============================================================
+    // ===== KHỞI TẠO =====
+    // ============================================================
     function init() {
         document.getElementById('footerYear').textContent = new Date().getFullYear();
         setupTabs();
+        setupAllMoneyInputs();
         loadFromLocalStorage();
         if (employees.length === 0) {
             addEmployeeData("Nguyễn Thị Hương", "Kế toán trưởng", 15000000, 2000000, "2020-03-15", 26);
@@ -836,7 +941,9 @@
         document.getElementById('salaryMonth').value = monthStr;
     }
 
-    // ========== LOCAL STORAGE ==========
+    // ============================================================
+    // ===== LOCAL STORAGE =====
+    // ============================================================
     function saveToLocalStorage() {
         localStorage.setItem('payroll_employees', JSON.stringify(employees));
         localStorage.setItem('payroll_salaryBook', JSON.stringify(salaryBook));
@@ -855,7 +962,9 @@
         if (nextSal) nextSalaryId = parseInt(nextSal);
     }
 
-    // ========== NHÂN VIÊN ==========
+    // ============================================================
+    // ===== NHÂN VIÊN =====
+    // ============================================================
     function addEmployeeData(name, position, baseSalary, allowance, startDate, standardDays) {
         const emp = {
             id: nextEmployeeId++,
@@ -874,13 +983,13 @@
     function addEmployee() {
         const name = document.getElementById('empName').value.trim();
         const position = document.getElementById('empPosition').value.trim();
-        const baseSalary = document.getElementById('empBaseSalary').value;
-        const allowance = document.getElementById('empAllowance').value;
+        const baseSalary = getNumericValue('empBaseSalary');
+        const allowance = getNumericValue('empAllowance');
         const startDate = document.getElementById('empStartDate').value;
         const standardDays = document.getElementById('empStandardDays').value;
 
         if (!name) { alert('Vui lòng nhập họ tên nhân viên!'); return; }
-        if (!baseSalary || Number(baseSalary) <= 0) { alert('Vui lòng nhập lương cơ bản hợp lệ!'); return; }
+        if (!baseSalary || baseSalary <= 0) { alert('Vui lòng nhập lương cơ bản hợp lệ!'); return; }
         if (!startDate) { alert('Vui lòng chọn ngày vào làm!'); return; }
 
         addEmployeeData(name, position, baseSalary, allowance, startDate, standardDays);
@@ -888,7 +997,6 @@
         renderAll();
         resetEmployeeForm();
         alert('✅ Đã thêm nhân viên: ' + name);
-        // Tự động chuyển sang tab danh sách để xem kết quả
         switchToPanel('panel-list');
     }
 
@@ -899,6 +1007,7 @@
         document.getElementById('empAllowance').value = '0';
         document.getElementById('empStartDate').value = '';
         document.getElementById('empStandardDays').value = '26';
+        document.getElementById('empName').focus();
     }
 
     function deleteEmployee(id) {
@@ -908,7 +1017,9 @@
         renderAll();
     }
 
-    // ========== RENDER ==========
+    // ============================================================
+    // ===== RENDER =====
+    // ============================================================
     function renderAll() {
         renderEmployeeList();
         renderEmployeeSelect();
@@ -959,15 +1070,17 @@
         });
     }
 
-    // ========== TÍNH LƯƠNG ==========
+    // ============================================================
+    // ===== TÍNH LƯƠNG =====
+    // ============================================================
     let lastCalculatedSalary = null;
 
     function calculateSalary() {
         const empId = parseInt(document.getElementById('salaryEmployeeSelect').value);
         const month = document.getElementById('salaryMonth').value;
         const workedDays = parseFloat(document.getElementById('salaryWorkedDays').value) || 0;
-        const bonus = parseFloat(document.getElementById('salaryBonus').value) || 0;
-        const deduction = parseFloat(document.getElementById('salaryDeduction').value) || 0;
+        const bonus = getNumericValue('salaryBonus');
+        const deduction = getNumericValue('salaryDeduction');
 
         if (!empId) { alert('Vui lòng chọn nhân viên!'); return; }
         if (!month) { alert('Vui lòng chọn tháng tính lương!'); return; }
@@ -1013,11 +1126,12 @@
         saveToLocalStorage();
         renderSalaryBook();
         alert('✅ Đã lưu bản ghi lương vào sổ!');
-        // Chuyển sang tab sổ lương để xem
         switchToPanel('panel-book');
     }
 
-    // ========== SỔ LƯƠNG ==========
+    // ============================================================
+    // ===== SỔ LƯƠNG =====
+    // ============================================================
     function renderSalaryBook() {
         const container = document.getElementById('salaryBookContainer');
         if (salaryBook.length === 0) {
@@ -1091,7 +1205,9 @@
         URL.revokeObjectURL(link.href);
     }
 
-    // ========== ĐỊNH DẠNG ==========
+    // ============================================================
+    // ===== ĐỊNH DẠNG HIỂN THỊ =====
+    // ============================================================
     function formatMoney(amount) {
         if (amount === undefined || amount === null) return '0 ₫';
         return Number(amount).toLocaleString('vi-VN') + ' ₫';
